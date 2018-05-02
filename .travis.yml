@@ -1,0 +1,28 @@
+language: python
+python:
+- 3.6.0
+script:
+- "./test.sh"
+after_success:
+- source define_repo.sh
+- tag_push() { echo "Tagging into $2"; sudo docker tag $1 $2; sudo docker push $2;
+  }
+- sudo docker login -u $DOCKER_USER -p $DOCKER_PASS
+- tag_push $IMAGE $REPO
+- |
+  if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ]; then
+    echo "PR!";
+    BRANCH=`echo ${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} | perl -pne 'chomp;s{.*/}{};s/\W/-/g'`;
+    tag_push $IMAGE $REPO:$BRANCH;
+    tag_push $IMAGE $REPO:latest-pr;
+  fi
+- |
+  if [ ! -z "$TRAVIS_TAG" ]; then
+    echo "Git tag!";
+    tag_push $IMAGE $REPO:$TRAVIS_TAG;
+    tag_push $IMAGE $REPO:latest;
+  fi
+env:
+  global:
+  - secure: Vd/ZaPzkK+IkZ4k581UU3tbNevmLG6QJTqH4JLwP+GC4CFN7VnBeeG7pBZTtVoj2dsDZlB9FrDREA21ZlzpHMsgjVRfvO6Q2logtBDePYGpYv9Kr2E2UMLqbLKfXpWW1bnUSWmg7IBCC2E/Uo4oS7ds+UT+Wv62zb9+ueHBWnfNEX6Fnnq+vyQkgww9OlsO5TrB6aiDTc4T3mirR1rbSXGvQm2Xs2+HvZRlAvjXzX7+A0qgXqgjZ5aXWq5HVQ38tFvcxxs5eygvUuszkVW2XL2TE7nGiTinq+6+X5OKHOO91xhH6sIlrc3HgdqovMPWobveweJhOMs0sW8Uv023wKVES/HTUYTwNa8votVQZVuAF998Fazg0tNvPYGzhCl0HfauHxZzUCPAzrEvUof3X9qvDbV4Lq3DTArQUC07Uz1NRBbiJED9ZfZoxo4ejsFhe1CeX5dQyDOG+jTPg1sY7QSA28Wm6V55ua10JP5KP91/VBvFeTVe88n77+XgXtBvQNY19WeqCXYkrvxTbLrlxCjzRGxzZLsCjOB3sODEyf+ZIyoOYf+km0zA4LFyUp28l5ZbG6OsbX3eOEEfA9dTtYWLIxV8xm/oVCjE4EkcsyfydPDi+8g24jugLwFJ9X2QDtwTK8tt149o2IAshBUGiItMLJeC+Z0XRpV4LQMltm/4=
+  - secure: LhjYji2uiQ+9fzGCxZvQTfcqEGMgo7qqoaxg+jL87uUsCWuneAOTfb3ielWthc5CO+JJR7I7vHWLH/mQGXP+6JfgH2YZKKkH8uQQ81KHmghp2EdvAo0jARPsRTFwLsPG35ZDU08Q0Q7lhx154mPOfbWtrVvCeuNgq9+nIWPYZdqjmaCDkykSnBzjOACFrPVzCNeZ4fydXrpxvZmHRgziSw4WymxKZCsNgRPdO9Cu4wnWtuV9v6c6/pVrwryEYMO8hd55CbewmYlKGeFnAKhCI6o27v0sZpntAELuYGHzOzpWwlMsYnIPPDDTnfj5qoUgw9qEWVL+vgH4iDoVpqO28fUF83XwDtO11FhTd0VBObLJUd/UyOqqCEz8TK3ikpFb3n79oXhoD44fcVy7/lmWo1xmt+82ncj0fpBcxbocAQUMvMa6vW27zo7bTaB4nk2r1Ekn2C26I5HoRMxss8eXoI453x+gHihs90od/vel3y6DjUQIP41Wfnn81mjKQNoyLq03mRO7u4meUuEpP3Q07t5aoHfSfNxDnJcfUEZOpZw3lj+iuTEZHYbsuPdyuVCKH8LnlwVgYIvsuoB/lfp5ZFWK08surrwBtWJwMMbqGU24JU0tOj7QHnl/tchSdOtt+O1RhRm/vYn8smnHjN5Ek8oJl8HqHErbX7H4Nua1nq4=
