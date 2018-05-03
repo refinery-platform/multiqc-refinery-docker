@@ -21,5 +21,5 @@ multiqc .
 echo '### mv multiqc report'
 mv multiqc_report.html index.html
 echo '### start server'
-python -m SimpleHTTPServer $PORT
+python -m SimpleHTTPServer $PORT &
 echo '### done'
