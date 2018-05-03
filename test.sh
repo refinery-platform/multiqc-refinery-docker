@@ -33,11 +33,12 @@ end docker_build
 
 
 start docker_run
+export PORT=8888
 JSON=`cat fixtures/fake-input.json`
 docker run --env INPUT_JSON="$JSON" \
            --name $CONTAINER_NAME \
            --detach \
-           --publish 8888:80 \
+           --publish $PORT:80 \
            $IMAGE
 retry
 echo "docker is responsive"
