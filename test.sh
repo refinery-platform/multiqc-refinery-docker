@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -o errexit
+set -o xtrace
 
 # xtrace turned on only within the travis folds
 start() { echo travis_fold':'start:$1; echo $1; set -v; }

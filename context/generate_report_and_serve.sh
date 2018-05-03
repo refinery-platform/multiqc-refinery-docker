@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+set -o errexit
+set -o xtrace
 
 cd $1
 echo "PWD=$PWD"
 PORT=$2
 echo "PORT=$PORT"
 
-echo '### load input.json'
 python - <<EOF
 import os
 import json
@@ -16,10 +17,6 @@ for url in input_json['file_relationships']:
     wget.download(url)
 EOF
 
-echo '### run multiqc'
 multiqc .
-echo '### mv multiqc report'
 mv multiqc_report.html index.html
-echo '### start server'
-nohup python -m SimpleHTTPServer $PORT &
-echo '### done'
+python -m SimpleHTTPServer $PORT
