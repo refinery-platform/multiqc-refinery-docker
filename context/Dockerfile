@@ -1,9 +1,13 @@
-FROM ewels/multiqc:3.6.3
+FROM ewels/multiqc:v1.5
 
 RUN pip install wget
 
 COPY . .
 
-VOLUME data
-CMD ["./generate_report_and_serve.sh", "/data", $PORT]
-EXPOSE 80
+ENV VOLUME=/data
+VOLUME $VOLUME
+
+ENV PORT=80
+EXPOSE $PORT
+
+CMD ./generate_report_and_serve.sh $VOLUME $PORT

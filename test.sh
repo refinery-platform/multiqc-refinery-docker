@@ -9,7 +9,7 @@ retry() {
     TRIES=1
     until curl --silent --fail http://localhost:$PORT/ > /tmp/response.txt; do
         echo "$TRIES: not up yet"
-        if (( $TRIES > 10 )); then
+        if (( $TRIES > 5 )); then
             docker logs $CONTAINER_NAME
             die "HTTP requests to app never succeeded"
         fi
