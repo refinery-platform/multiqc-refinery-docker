@@ -12,7 +12,7 @@ import wget
 
 input_json = json.loads(os.environ['INPUT_JSON'])
 for url in input_json['file_relationships']:
-    wget(url)
+    wget.download(url)
 EOF
 
 multiqc .

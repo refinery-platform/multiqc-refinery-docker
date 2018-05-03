@@ -1,6 +1,6 @@
 FROM ewels/multiqc:v1.5
 
-RUN pip install wget
+RUN pip install wget==3.2
 
 COPY . .
 

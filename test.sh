@@ -9,7 +9,7 @@ retry() {
     TRIES=1
     until curl --silent --fail http://localhost:$PORT/ > /tmp/response.txt; do
         echo "$TRIES: not up yet"
-        if (( $TRIES > 5 )); then
+        if (( $TRIES > 10 )); then
             docker logs $CONTAINER_NAME
             die "HTTP requests to app never succeeded"
         fi
@@ -17,7 +17,7 @@ retry() {
         sleep 1
     done
     echo 'Container responded with:'
-    head -n50 /tmp/response.txt
+    head -n15 /tmp/response.txt
 }
 source define_repo.sh
 
@@ -40,11 +40,13 @@ docker run --env INPUT_JSON="$JSON" \
            $IMAGE
 retry
 echo "docker is responsive"
-EXPECTED_FILE='fixtures/expected-index.html'
-ACTUAL_TEXT=`curl http://localhost:8888/`
-diff $EXPECTED_FILE <(echo "$ACTUAL_TEXT") \
-|| die "Did not find expected $EXPECTED_FILE; Perhaps update to:
-$ACTUAL_TEXT"
+ACTUAL_FILE='/tmp/actual-index.html'
+curl http://localhost:8888/ > $ACTUAL_FILE
+for TOOL in 'General Stats' 'Bowtie 2' 'FastQC'; do
+    echo "Looking for '$TOOL'..."
+    grep --only-matching "$TOOL" "$ACTUAL_FILE" \
+    || die "Didn't find '$TOOL' in '$ACTUAL_FILE'"
+done
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 echo "container cleaned up"
