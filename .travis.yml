@@ -1,11 +1,11 @@
+language: python
+python:
+- 3.6.0
 script:
 - "./test.sh"
 after_script:
-- echo '----------------------------------'
 - docker ps -a
-- echo '----------------------------------'
-- ps aux
-- echo '----------------------------------'
+- docker logs qualimap_multiqc_refinery-container
 after_success:
 - source define_repo.sh
 - tag_push() { echo "Tagging into $2"; sudo docker tag $1 $2; sudo docker push $2;
