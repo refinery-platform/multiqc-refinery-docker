@@ -38,3 +38,9 @@ end test_good
 start test_empty
 test fixtures/empty-input.json 'MultiQC did not run'
 end test_empty
+
+start test_mixed
+test fixtures/mixed-input.json 'General Stats' 'Bowtie 2'
+# TODO: Add explicit error if some of the inputs were not processed?
+# They might be bad URLs, or they might be be unrecognized filetypes.
+end test_mixed
