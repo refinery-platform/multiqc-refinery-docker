@@ -1,0 +1,76 @@
+##FastQC	0.11.4
+>>Basic Statistics	pass
+#Measure	Value
+Filename	input.fastq
+File type	Conventional base calls
+Encoding	Sanger / Illumina 1.9
+Total Sequences	489620
+Sequences flagged as poor quality	0
+Sequence length	36
+%GC	41
+>>END_MODULE
+>>Per base sequence quality	pass
+#Base	Mean	Median	Lower Quartile	Upper Quartile	10th Percentile	90th Percentile
+1	35.2481883909971	39.0	37.0	40.0	10.0	40.0
+2	35.05481393733916	39.0	37.0	40.0	10.0	40.0
+3	35.01505248968588	39.0	36.0	40.0	10.0	40.0
+>>END_MODULE
+>>Per tile sequence quality	fail
+#Tile	Base	Mean
+1	1	7.556868603970305
+1	2	7.437780317998072
+1	3	7.318602593216859
+>>END_MODULE
+>>Per sequence quality scores	pass
+#Quality	Count
+0	5367.0
+1	2100.0
+2	1857.0
+>>END_MODULE
+>>Per base sequence content	warn
+#Base	G	A	T	C
+1	12.76011241921911	30.1303523721599	20.25220794287535	36.85732726574564
+2	19.14743691866521	29.51393569523249	33.36070227897534	17.977925107126953
+3	18.968137254901958	32.51205065359477	28.504697712418302	20.015114379084967
+>>END_MODULE
+>>Per sequence GC content	pass
+#GC Content	Count
+0	47.0
+1	68.0
+2	89.0
+3	89.0
+>>END_MODULE
+>>Per base N content	pass
+#Base	N-Count
+1	0.004901760548997182
+2	0.002859360320248356
+3	0.004084800457497651
+>>END_MODULE
+>>Sequence Length Distribution	pass
+#Length	Count
+36	489620.0
+>>END_MODULE
+>>Sequence Duplication Levels	pass
+#Total Deduplicated Percentage	90.06566131713257
+#Duplication Level	Percentage of deduplicated	Percentage of total
+1	89.19254244702898	80.33185320048084
+2	10.663647269542777	19.208568867680103
+3	0.07583288065586168	0.2048981563756011
+>50	0.0	0.0
+>100	0.0	0.0
+>500	0.0	0.0
+>1k	0.0	0.0
+>5k	0.0	0.0
+>10k+	0.0	0.0
+>>END_MODULE
+>>Overrepresented sequences	pass
+>>END_MODULE
+>>Adapter Content	pass
+#Position	Illumina Universal Adapter	Illumina Small RNA Adapter	Nextera Transposase Sequence	SOLID Small RNA Adapter
+1	0.0	0.0	0.0	0.0
+2	0.0	0.0	2.0424002287488255E-4	0.0
+3	0.0	0.0	2.0424002287488255E-4	0.0
+4	0.0	0.0	2.0424002287488255E-4	0.0
+>>END_MODULE
+>>Kmer Content	pass
+>>END_MODULE
