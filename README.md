@@ -1,4 +1,6 @@
 # qualimap-multiqc-refinery-docker
+[![Build Status](https://travis-ci.org/refinery-platform/qualimap-multiqc-refinery-docker.svg?branch=master)](https://travis-ci.org/refinery-platform/qualimap-multiqc-refinery-docker)
+
 Creates a Docker container wrapping MultiQC as a Refinery visualization.
 
 ## Development
