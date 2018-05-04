@@ -1,55 +1,46 @@
 #!/usr/bin/env bash
 set -o errexit
-set -o xtrace
 
 # xtrace turned on only within the travis folds
 start() { echo travis_fold':'start:$1; echo $1; set -v; }
 end() { set +v; echo travis_fold':'end:$1; echo; echo; }
-die() { set +v; echo "$*" 1>&2 ; exit 1; }
-retry() {
-    TRIES=1
-    until curl --silent --fail http://localhost:$PORT/ > /tmp/response.txt; do
-        echo "$TRIES: not up yet"
-        if (( $TRIES > 10 )); then
-            docker logs $CONTAINER_NAME
-            die "HTTP requests to app never succeeded"
-        fi
-        (( TRIES++ ))
-        sleep 1
+cleanup() { docker stop $CONTAINER_NAME; docker rm $CONTAINER_NAME; }
+
+test() {
+    FIXTURE=$1
+    shift
+    echo "Run with $FIXTURE"
+    ./run.sh $FIXTURE
+    OUTPUT=/tmp/multiqc.html
+    curl http://localhost:$PORT/ > $OUTPUT
+    while (( "$#" )); do
+        PATTERN=$1
+        shift
+        echo "Looking for '$PATTERN'..."
+        grep --only-matching "$PATTERN" "$OUTPUT" \
+            || die "Didn't find '$PATTERN' in '$OUTPUT'"
     done
-    echo 'Container responded with:'
-    head -n15 /tmp/response.txt
+    echo 'Cleaning up...'
+    cleanup
 }
-source define_repo.sh
+
+source shared.sh
 
 
-start docker_build
-# TODO: docker pull $REPO
-# TODO: --cache-from $REPO
-docker build \
-     --tag $IMAGE \
-     context
-end docker_build
+start build
+./build.sh
+end build
 
+start test_good
+test fixtures/good-input.json 'General Stats' 'Bowtie 2' 'FastQC'
+end test_good
 
-start docker_run
-export PORT=8888
-JSON=`cat fixtures/fake-input.json`
-docker run --env INPUT_JSON="$JSON" \
-           --name $CONTAINER_NAME \
-           --detach \
-           --publish $PORT:80 \
-           $IMAGE
-retry
-echo "docker is responsive"
-ACTUAL_FILE='/tmp/actual-index.html'
-curl http://localhost:8888/ > $ACTUAL_FILE
-for TOOL in 'General Stats' 'Bowtie 2' 'FastQC'; do
-    echo "Looking for '$TOOL'..."
-    grep --only-matching "$TOOL" "$ACTUAL_FILE" \
-    || die "Didn't find '$TOOL' in '$ACTUAL_FILE'"
-done
-docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
-echo "container cleaned up"
-end docker_run
+start test_empty
+test fixtures/empty-input.json 'MultiQC did not run'
+end test_empty
+
+start test_mixed
+test fixtures/mixed-input.json 'General Stats' 'Bowtie 2'
+# TODO: Add explicit error if some of the inputs were not processed?
+# They might be bad URLs, or they might be be unrecognized filetypes.
+end test_mixed

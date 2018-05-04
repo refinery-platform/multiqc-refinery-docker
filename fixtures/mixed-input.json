@@ -1,0 +1,6 @@
+{
+  "file_relationships": [
+    "https://raw.githubusercontent.com/refinery-platform/qualimap-multiqc-refinery-docker/fixtures/fixtures/fake.bowtie2",
+    "https://raw.githubusercontent.com/refinery-platform/qualimap-multiqc-refinery-docker/fixtures/i-do-not-exist.txt"
+  ]
+}
