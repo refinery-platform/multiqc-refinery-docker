@@ -7,10 +7,9 @@ after_script:
 - docker ps -a
 - docker logs qualimap_multiqc_refinery-container
 after_success:
-- source define_repo.sh
-- tag_push() { echo "Tagging into $2"; sudo docker tag $1 $2; sudo docker push $2;
-  }
-- sudo docker login -u $DOCKER_USER -p $DOCKER_PASS
+- source shared.sh
+- tag_push() { echo "Tagging into $2"; docker tag $1 $2; docker push $2; }
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
 - tag_push $IMAGE $REPO
 - |
   if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ]; then
