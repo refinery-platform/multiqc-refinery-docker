@@ -3,7 +3,16 @@ Creates a Docker container wrapping MultiQC as a Refinery visualization.
 
 ## Development
 
+After you checkout the repo you can build and run the docker container:
+```
+$ ./build.sh
+$ ./run.sh good-input.json
+```
 
+Or you can run tests:
+```
+$ ./test.sh
+```
 
 ## Release
 
