@@ -18,8 +18,8 @@ input_json = None
 if os.environ.get('INPUT_JSON'):
     input_json = json.loads(os.environ["INPUT_JSON"])
 elif os.environ.get('INPUT_JSON_URL'):
-	response = urllib2.urlopen(os.environ["INPUT_JSON_URL"])
-	input_json = json.loads(response.read())
+    response = urllib2.urlopen(os.environ["INPUT_JSON_URL"])
+    input_json = json.loads(response.read())
 else:
     raise Exception('Did not find expected environment variable')
 
