@@ -7,7 +7,7 @@ echo "PWD=$PWD"
 PORT=$2
 echo "PORT=$PORT"
 
-./download.py
+./download_and_unzip.py
 
 multiqc .
 mv multiqc_report.html index.html || \
