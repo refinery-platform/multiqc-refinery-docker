@@ -11,19 +11,13 @@ python - <<EOF
 import os
 import json
 import wget
-import urllib2
 
-input_json = None
-
-if os.environ.get('INPUT_JSON'):
-    input_json = json.loads(os.environ["INPUT_JSON"])
-elif os.environ.get('INPUT_JSON_URL'):
-    response = urllib2.urlopen(os.environ["INPUT_JSON_URL"])
-    input_json = json.loads(response.read())
+if 'INPUT_JSON_URL' in os.environ:
+    input_json = wget.download(os.environ['INPUT_JSON_URL'])
 else:
-    raise Exception('Did not find expected environment variable')
+    input_json = os.environ['INPUT_JSON']
 
-for url in input_json['file_relationships']:
+for url in json.loads(input_json)['file_relationships']:
     wget.download(url)
 EOF
 
