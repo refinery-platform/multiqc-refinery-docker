@@ -1,8 +1,7 @@
 FROM ewels/multiqc:v1.5
 
-RUN pip install wget==3.2
-
 COPY . .
+RUN pip install -r requirements.txt
 
 ENV VOLUME=/data
 VOLUME $VOLUME
