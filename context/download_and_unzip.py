@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os
 import json
 import wget
@@ -7,13 +8,18 @@ def unzip_all_in_dir(top):
     '''
     >>> fixtures = os.path.dirname(os.path.realpath(__file__)) + '/../fixtures'
     >>> d = fixtures + '/d'
-    >>> assert os.listdir(d) == ['c.zip']
-    >>> unzip_all_in_dir(fixtures + '/d')
     >>> os.listdir(d)
-    
+    ['c.zip']
+    >>> unzip_all_in_dir(d)
+    >>> os.listdir(d)
+    ['c.zip', 'c.zip.unzipped']
+    >>> os.listdir(d + '/c.zip.unzipped/c/b.zip.unzipped/b/a.zip.unzipped/a/')
+    ['abc.txt']
+    >>> import shutil
+    >>> shutil.rmtree(d + '/c.zip.unzipped')
+    >>> os.listdir(d)
+    ['c.zip']
     '''
-    # Note that zip files with absolute paths could clobber other directories:
-    # https://docs.python.org/3/library/zipfile.html#zipfile.ZipFile.extractall
     for root, dirs, files in os.walk(top):
         for dir in dirs:
             abs_dir = os.path.join(top, dir)

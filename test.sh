@@ -26,6 +26,9 @@ test() {
 
 source shared.sh
 
+start doctest
+python -m doctest -v context/download_and_unzip.py
+end doctest
 
 start build
 ./build.sh

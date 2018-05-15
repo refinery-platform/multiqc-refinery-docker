@@ -2,13 +2,16 @@
 set -o errexit
 set -o xtrace
 
-cd $1
-echo "PWD=$PWD"
+export PATH=$PATH:$(pwd)
+
+DATA_DIR=$1
+cd $DATA_DIR
+echo "DATA_DIR=$DATA_DIR"
+
 PORT=$2
 echo "PORT=$PORT"
 
-./download_and_unzip.py
-
+download_and_unzip.py
 multiqc .
 mv multiqc_report.html index.html || \
 cat <<EOF > index.html
