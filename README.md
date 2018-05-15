@@ -8,7 +8,7 @@ Creates a Docker container wrapping MultiQC as a Refinery visualization.
 After you checkout the repo you can build and run the docker container:
 ```
 $ ./build.sh
-$ ./run.sh fixtures/good-input.json
+$ ./run_path.sh fixtures/good-input.json
 ```
 
 Or you can run tests:

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import json
+import urllib2
 import wget
 import zipfile
 
@@ -35,7 +36,7 @@ def unzip_all_in_dir(top):
 
 if __name__ == '__main__':
     if 'INPUT_JSON_URL' in os.environ:
-        input_json = wget.download(os.environ['INPUT_JSON_URL'])
+        input_json = urllib2.urlopen(os.environ['INPUT_JSON_URL']).read()
     else:
         input_json = os.environ['INPUT_JSON']
 
