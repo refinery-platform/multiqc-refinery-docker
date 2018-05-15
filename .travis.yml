@@ -1,6 +1,8 @@
 language: python
 python:
 - 3.6.0
+before_script:
+- "pip install -r context/requirements.txt"
 script:
 - "./test.sh"
 after_script:
